@@ -21,7 +21,7 @@ class OrgsGetter extends GithubGetter {
         super(oauthToken)
     }
 
-    @Cacheable("github")
+    @Cacheable("orgs")
     List<Object> getOrgs(String githubLogin) {
         getData("users/${githubLogin}/orgs", githubLogin)
     }

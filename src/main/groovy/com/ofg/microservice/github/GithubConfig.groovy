@@ -22,9 +22,21 @@ class GithubConfig {
 //    }
 
     @Bean
-    CacheManager cacheManager() {
+    CacheManager orgsCacheManager() {
         CacheConfiguration cacheConfiguration = new CacheConfiguration()
-        cacheConfiguration.setName("github")
+        cacheConfiguration.setName("orgs")
+        cacheConfiguration.setMemoryStoreEvictionPolicy("LRU")
+        cacheConfiguration.setMaxEntriesLocalHeap(10000)
+        cacheConfiguration.setTimeToLiveSeconds(60 * 10)
+        net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration()
+        config.addCache(cacheConfiguration)
+        return new EhCacheCacheManager( net.sf.ehcache.CacheManager.newInstance(config) )
+    }
+
+    @Bean
+    CacheManager reposCacheManager() {
+        CacheConfiguration cacheConfiguration = new CacheConfiguration()
+        cacheConfiguration.setName("repos")
         cacheConfiguration.setMemoryStoreEvictionPolicy("LRU")
         cacheConfiguration.setMaxEntriesLocalHeap(10000)
         cacheConfiguration.setTimeToLiveSeconds(60 * 10)

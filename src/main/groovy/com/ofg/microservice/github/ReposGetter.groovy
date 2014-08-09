@@ -20,7 +20,7 @@ class ReposGetter extends GithubGetter {
         super(oauthToken)
     }
 
-    @Cacheable("github")
+    @Cacheable("repos")
     List<Object> getRepos(String githubLogin) {
         getData("users/${githubLogin}/repos", githubLogin)
     }

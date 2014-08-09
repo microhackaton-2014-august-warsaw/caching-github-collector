@@ -4,6 +4,7 @@ import groovy.json.JsonSlurper
 import groovy.transform.PackageScope
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.apache.commons.lang3.StringUtils
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
@@ -28,7 +29,9 @@ abstract class GithubGetter {
             RestTemplate restTemplate = new RestTemplate()
             restTemplate.setInterceptors((List<ClientHttpRequestInterceptor>) [acceptHeaderGithub]);
 
-            String retVal = new RestTemplate().getForObject(GithubConfig.GITHUB_URL + "${uri}?access_token=${oauthToken}", String.class)
+            String tokenString = StringUtils.isNotEmpty(oauthToken) ? "?access_token=${oauthToken}" : ""
+
+            String retVal = new RestTemplate().getForObject(GithubConfig.GITHUB_URL + "${uri}${tokenString}", String.class)
 
             List<Object> result = (List<Object>) new JsonSlurper().parseText(retVal)
 

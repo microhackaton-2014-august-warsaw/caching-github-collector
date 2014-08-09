@@ -11,4 +11,4 @@ logs
 .log
 .zip
 /out
-/.nb-gradle/private/
+.nb-gradle/

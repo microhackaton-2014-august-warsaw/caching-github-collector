@@ -4,6 +4,8 @@ import groovy.json.JsonSlurper
 import groovy.transform.PackageScope
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.stereotype.Component
@@ -18,6 +20,13 @@ import org.springframework.web.client.RestTemplate
 @Slf4j
 class ReposGetter {
 
+    String oauthToken
+
+    @Autowired
+    ReposGetter(@Value('${oauthToken}') String oauthToken) {
+        this.oauthToken = oauthToken
+    }
+
     @Cacheable("github")
     List<Object> getRepos(String githubLogin) {
         ClientHttpRequestInterceptor acceptHeaderGithub = new AcceptHeaderHttpRequestInterceptor();
@@ -25,7 +34,7 @@ class ReposGetter {
         RestTemplate restTemplate = new RestTemplate()
 //        restTemplate.setInterceptors([acceptHeaderGithub]);
 
-        String retVal = new RestTemplate().getForObject(GithubConfig.GITHUB_URL + "users/${githubLogin}/repos?access_token=3983ec7547d94a1921d15707690a0627bf1588e3", String.class)
+        String retVal = new RestTemplate().getForObject(GithubConfig.GITHUB_URL + "users/${githubLogin}/repos?access_token=${oauthToken}", String.class)
 
         List<Object> result = (List<Object>) new JsonSlurper().parseText(retVal)
 

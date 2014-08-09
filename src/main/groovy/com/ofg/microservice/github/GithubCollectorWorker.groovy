@@ -39,7 +39,7 @@ class GithubCollectorWorker implements GithubCollector {
         List<Object> orgs = orgsGetter.getOrgs(githubLogin)
 
         GitHubData data = new GitHubData(
-                [githubLogin: githubLogin,
+                [githubId: githubLogin,
                  pairId     : pairId,
                  repos      : repos,
                  orgs       : orgs])

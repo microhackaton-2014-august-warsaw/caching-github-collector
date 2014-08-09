@@ -19,6 +19,7 @@ class AcceptHeaderHttpRequestInterceptor implements ClientHttpRequestInterceptor
     ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         HttpRequestWrapper requestWrapper = new HttpRequestWrapper(request);
         requestWrapper.getHeaders().setAccept(MediaType.valueOf(GITHUB_HEADER_ACCEPT));
+        requestWrapper.getHeaders().setAccept(MediaType.valueOf(GITHUB_HEADER_ACCEPT));
 
         return execution.execute(requestWrapper, body);
     }

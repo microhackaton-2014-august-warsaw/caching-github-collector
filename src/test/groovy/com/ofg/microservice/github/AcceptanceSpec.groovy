@@ -1,4 +1,4 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
 
 import com.jayway.awaitility.Awaitility
 import com.ofg.base.MicroserviceMvcWiremockSpec
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
     String pairId = '1'
-    String testUserTwitterId = 'jnabrdalik'
+    String testUserGithubId = 'jnabrdalik'
 
     def "should return HTTP 200"() {
         given:
@@ -41,7 +41,7 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
     }
 
     private ResultActions sendUsernameAndPairId() {
-        mockMvc.perform(get("/tweets/$testUserTwitterId/$pairId").
+        mockMvc.perform(get("/github/$testUserGithubId/$pairId").
                 accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
     }

@@ -36,7 +36,7 @@ import static org.springframework.http.MediaType.parseMediaType
 
     void collectAndPassToAnalyzers(String githubLogin, Long pairId) {
         Collection<Tweet> tweets = tweetsGetter.getTweets(githubLogin)
-        String analyzerUrl = serviceResolver.getUrl('analyzer').get()
+        String analyzerUrl = serviceResolver.getUrl('sentence-analyzer').get()
         restTemplate.put("$analyzerUrl/api/{pairId}", createEntity(tweets), pairId)
     }
 

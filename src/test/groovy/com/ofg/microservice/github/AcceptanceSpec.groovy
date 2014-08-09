@@ -1,5 +1,6 @@
 package com.ofg.microservice.github
 
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.jayway.awaitility.Awaitility
 import com.ofg.base.MicroserviceMvcWiremockSpec
 import org.springframework.http.MediaType
@@ -9,8 +10,7 @@ import java.util.concurrent.TimeUnit
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.jayway.awaitility.Awaitility.await
-import static com.ofg.infrastructure.base.dsl.WireMockHttpRequestMapper.wireMockPut
-import static com.ofg.microservice.github.GithubCollectorWorker.TWITTER_PLACES_ANALYZER_MEDIA_TYPE
+import static com.ofg.microservice.github.GithubCollectorWorker.GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER
 import static org.springframework.http.HttpStatus.OK
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -34,9 +34,9 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
         when:
             sendUsernameAndPairId()
         then:
-            await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(putRequestedFor(urlEqualTo("/sentence-analyzer/api/$pairId")).
-                        withRequestBody(containing('[{"extraData":{')).
-                        withHeader("Content-Type", equalTo(TWITTER_PLACES_ANALYZER_MEDIA_TYPE.toString())))
+            await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(postRequestedFor(urlEqualTo("/topics-analyzer/api/analyze")).
+                        withRequestBody(containing('githubLogin')))
+//                        withHeader("Content-Type", equalTo(GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER.toString())))
             })
     }
 
@@ -47,6 +47,6 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
     }
 
     private analyzerRespondsOk() {
-        stubInteraction(wireMockPut("/sentence-analyzer/api/$pairId"), aResponse().withStatus(OK.value()))
+        stubInteraction(post(WireMock.urlEqualTo("/topics-analyzer/api/analyze")), aResponse().withStatus(OK.value()))
     }
 }

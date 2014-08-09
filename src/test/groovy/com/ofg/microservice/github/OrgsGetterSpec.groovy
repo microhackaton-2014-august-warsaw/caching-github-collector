@@ -7,12 +7,20 @@ import spock.lang.Specification
  */
 class OrgsGetterSpec extends Specification {
     OrgsGetter orgsGetter = new OrgsGetter("3983ec7547d94a1921d15707690a0627bf1588e3")
+
     private String githubId = "szimano"
 
     def "should filter json"() {
         when:
-            List orgs = orgsGetter.getOrgs(githubId)
+        List orgs = orgsGetter.getOrgs(githubId)
         then:
-            orgs.size() > 0
+        orgs.size() > 0
+    }
+
+    def "should return empty list"() {
+        when:
+        List orgs = orgsGetter.getOrgs("uuuuuuuuuuuuuuuuuuuuuuuuuuNoSuchUser")
+        then:
+        orgs.size() == 0
     }
 }

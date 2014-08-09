@@ -38,11 +38,15 @@ class GithubCollectorWorker implements GithubCollector {
         List<Object> repos = reposGetter.getRepos(githubLogin)
         List<Object> orgs = orgsGetter.getOrgs(githubLogin)
 
+        if (repos.size() == 0 && orgs.size() == 0) {
+            return
+        }
+
         GitHubData data = new GitHubData(
                 [githubId: githubLogin,
-                 pairId     : pairId,
-                 repos      : repos,
-                 orgs       : orgs])
+                 pairId  : pairId,
+                 repos   : repos,
+                 orgs    : orgs])
 
         try {
             String topicsUrl = serviceResolver.getUrl('topics-analyzer').get()

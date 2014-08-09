@@ -4,46 +4,67 @@ import com.ofg.infrastructure.discovery.ServiceResolver
 import com.ofg.infrastructure.web.filter.correlationid.CorrelationIdHolder
 import groovy.transform.PackageScope
 import groovy.transform.TypeChecked
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.scheduling.annotation.Async
-import org.springframework.social.twitter.api.Tweet
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
-import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.http.MediaType.parseMediaType
-
 @TypeChecked
 @Component
-@PackageScope class GithubCollectorWorker implements GithubCollector  {
+@PackageScope
+@Slf4j
+class GithubCollectorWorker implements GithubCollector {
 
-    public static final String TWITTER_PLACES_ANALYZER_CONTENT_TYPE_HEADER = 'vnd.com.ofg.twitter-places-analyzer.v1+json'
-    public static final MediaType TWITTER_PLACES_ANALYZER_MEDIA_TYPE = new MediaType('application', TWITTER_PLACES_ANALYZER_CONTENT_TYPE_HEADER)
+    public static
+    final String GITHUB_SENTENCES_ANALYZER_CONTENT_TYPE_HEADER = "vnd.com.ofg.github-sentences-analyzer.v1+json"
+    public static
+    final MediaType GITHUB_SENTENCES_ANALYZER_MEDIA_TYPE = new MediaType('application', GITHUB_SENTENCES_ANALYZER_CONTENT_TYPE_HEADER)
 
-    private TweetsGetter tweetsGetter
+    public static final String GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER = "vnd.com.ofg.github-topics-analyzer.v1+json"
+    public static
+    final MediaType GITHUB_TOPICS_ANALYZER_MEDIA_TYPE = new MediaType('application', GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER)
+
+    private ReposGetter reposGetter
+    private OrgsGetter orgsGetter
     private RestTemplate restTemplate = new RestTemplate()
     private ServiceResolver serviceResolver
 
     @Autowired
-    GithubCollectorWorker(TweetsGetter tweetsGetter, ServiceResolver serviceResolver) {
-        this.tweetsGetter = tweetsGetter
+    GithubCollectorWorker(ReposGetter reposGetter, OrgsGetter orgsGetter, ServiceResolver serviceResolver) {
+        this.reposGetter = reposGetter
+        this.orgsGetter = orgsGetter
         this.serviceResolver = serviceResolver
     }
 
     void collectAndPassToAnalyzers(String githubLogin, Long pairId) {
-        Collection<Tweet> tweets = tweetsGetter.getTweets(githubLogin)
-        String analyzerUrl = serviceResolver.getUrl('analyzer').get()
-        restTemplate.put("$analyzerUrl/api/{pairId}", createEntity(tweets), pairId)
+        List<Object> repos = reposGetter.getRepos(githubLogin)
+        List<Object> orgs = orgsGetter.getOrgs(githubLogin)
+
+        GitHubData data = new GitHubData(
+                [githubLogin: githubLogin,
+                 pairId     : pairId,
+                 repos      : repos,
+                 orgs       : orgs])
+
+        try {
+            String topicsUrl = serviceResolver.getUrl('topics-analyzer').get()
+            restTemplate.postForLocation("${topicsUrl}/api/analyze", createTopicsEntity(data))
+        } catch (Exception e) {
+            log.error(e.getMessage(), e)
+            throw e
+        }
     }
 
-    private HttpEntity<Object> createEntity(Object object) {
+    private HttpEntity<Object> createTopicsEntity(GitHubData gitHubData) {
         HttpHeaders headers = new HttpHeaders()
-        headers.setContentType(TWITTER_PLACES_ANALYZER_MEDIA_TYPE)
+
+        headers.setContentType(GITHUB_TOPICS_ANALYZER_MEDIA_TYPE)
         headers.set(CorrelationIdHolder.CORRELATION_ID_HEADER, CorrelationIdHolder.get())
-        return new HttpEntity<Object>(object, headers);
+
+        return new HttpEntity<Object>(gitHubData, headers);
     }
+
 }

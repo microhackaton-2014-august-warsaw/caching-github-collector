@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-social-twitter:$springBootVersion"
+//    compile "org.springframework.boot:spring-boot-starter-social-twitter:$springBootVersion"
     compile "org.springframework:spring-context-support:$springVersion"
     compile 'org.apache.httpcomponents:httpclient:4.3.4'
     compile 'net.sf.ehcache:ehcache:2.8.3'

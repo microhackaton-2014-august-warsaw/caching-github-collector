@@ -25,7 +25,7 @@ import static org.springframework.util.StringUtils.hasText
         this.numberOfTweets = numberOfTweets
     }
 
-    @Cacheable("tweets")
+    @Cacheable("github")
     Collection<Tweet> getTweets(String twitterLogin) {
         hasText(twitterLogin)
         return twitter.timelineOperations().getUserTimeline(twitterLogin, numberOfTweets).findAll{!it.isRetweet()}

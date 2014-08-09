@@ -34,7 +34,7 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
         when:
             sendUsernameAndPairId()
         then:
-            await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(putRequestedFor(urlEqualTo("/analyzer/api/$pairId")).
+            await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(putRequestedFor(urlEqualTo("/sentence-analyzer/api/$pairId")).
                         withRequestBody(containing('[{"extraData":{')).
                         withHeader("Content-Type", equalTo(TWITTER_PLACES_ANALYZER_MEDIA_TYPE.toString())))
             })
@@ -47,6 +47,6 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
     }
 
     private analyzerRespondsOk() {
-        stubInteraction(wireMockPut("/analyzer/api/$pairId"), aResponse().withStatus(OK.value()))
+        stubInteraction(wireMockPut("/sentence-analyzer/api/$pairId"), aResponse().withStatus(OK.value()))
     }
 }

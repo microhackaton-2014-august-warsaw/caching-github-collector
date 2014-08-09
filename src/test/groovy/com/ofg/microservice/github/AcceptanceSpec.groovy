@@ -1,4 +1,4 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
 
 import com.jayway.awaitility.Awaitility
 import com.ofg.base.MicroserviceMvcWiremockSpec
@@ -17,36 +17,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
     String pairId = '1'
-    String testUserTwitterId = 'jnabrdalik'
+    String testUserGithubId = 'jnabrdalik'
 
     def "should return HTTP 200"() {
         given:
             analyzerRespondsOk()
         expect:
-            await().atMost(5, TimeUnit.SECONDS).until({
+            await().atMost(20, TimeUnit.SECONDS).until({
                 sendUsernameAndPairId().andExpect(status().isOk())
             })
     }
 
-    def "should send tweets with pairId to analyzer"() {
+    def "should send github with pairId to analyzer"() {
         given:
             analyzerRespondsOk()
         when:
             sendUsernameAndPairId()
         then:
-            await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(putRequestedFor(urlEqualTo("/analyzer/api/$pairId")).
+            await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(putRequestedFor(urlEqualTo("/sentence-analyzer/api/$pairId")).
                         withRequestBody(containing('[{"extraData":{')).
                         withHeader("Content-Type", equalTo(TWITTER_PLACES_ANALYZER_MEDIA_TYPE.toString())))
             })
     }
 
     private ResultActions sendUsernameAndPairId() {
-        mockMvc.perform(get("/tweets/$testUserTwitterId/$pairId").
+        mockMvc.perform(get("/github/$testUserGithubId/$pairId").
                 accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
     }
 
     private analyzerRespondsOk() {
-        stubInteraction(wireMockPut("/analyzer/api/$pairId"), aResponse().withStatus(OK.value()))
+        stubInteraction(wireMockPut("/sentence-analyzer/api/$pairId"), aResponse().withStatus(OK.value()))
     }
 }

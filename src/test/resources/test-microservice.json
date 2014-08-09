@@ -1,8 +1,9 @@
 {
     "pl": {
-        "this": "payments",
+        "this": "pl/microhackaton/github-collector",
         "dependencies": {
-            "analyzer" : "pl/mickrohackaton/twitter-places-analyzer"
+            "sentence-analyzer" : "pl/microhackaton/github-sentence-analyzer",
+            "topics-analyzer" : "pl/microhackaton/github-topics-analyzer"
         }
     }
 }

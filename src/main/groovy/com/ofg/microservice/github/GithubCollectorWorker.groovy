@@ -18,11 +18,6 @@ import org.springframework.web.client.RestTemplate
 @Slf4j
 class GithubCollectorWorker implements GithubCollector {
 
-    public static
-    final String GITHUB_SENTENCES_ANALYZER_CONTENT_TYPE_HEADER = "vnd.com.ofg.github-sentences-analyzer.v1+json"
-    public static
-    final MediaType GITHUB_SENTENCES_ANALYZER_MEDIA_TYPE = new MediaType('application', GITHUB_SENTENCES_ANALYZER_CONTENT_TYPE_HEADER)
-
     public static final String GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER = "vnd.com.ofg.github-topics-analyzer.v1+json"
     public static
     final MediaType GITHUB_TOPICS_ANALYZER_MEDIA_TYPE = new MediaType('application', GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER)

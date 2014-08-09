@@ -54,6 +54,7 @@ class GithubCollectorWorker implements GithubCollector {
             try {
                 String topicsUrl = topicsUrlOpt.get()
                 restTemplate.postForLocation("${topicsUrl}/api/analyze", createTopicsEntity(data))
+                log.info("Post to location ${topicsUrl}/api/analyze successfull")
             } catch (Exception e) {
                 log.error(e.getMessage(), e)
                 throw e

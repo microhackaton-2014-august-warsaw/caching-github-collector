@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
     String pairId = '1'
-    String testUserGithubId = 'jnabrdalik'
+    String testUserGithubId = 'ingwarsw'
 
     def "should return HTTP 200"() {
         given:

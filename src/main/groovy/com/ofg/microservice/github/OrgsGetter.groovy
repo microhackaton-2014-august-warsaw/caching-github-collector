@@ -25,7 +25,7 @@ class OrgsGetter {
         RestTemplate restTemplate = new RestTemplate()
 //        restTemplate.setInterceptors([acceptHeaderGithub]);
 
-        String retVal = new RestTemplate().getForObject(GithubConfig.GITHUB_URL + "users/${githubLogin}/orgs", String.class)
+        String retVal = new RestTemplate().getForObject(GithubConfig.GITHUB_URL + "users/${githubLogin}/orgs?access_token=3983ec7547d94a1921d15707690a0627bf1588e3", String.class)
 
         List<Object> result = (List<Object>) new JsonSlurper().parseText(retVal)
 

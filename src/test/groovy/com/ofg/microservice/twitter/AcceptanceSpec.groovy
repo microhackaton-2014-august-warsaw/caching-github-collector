@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.jayway.awaitility.Awaitility.await
 import static com.ofg.infrastructure.base.dsl.WireMockHttpRequestMapper.wireMockPut
-import static com.ofg.microservice.twitter.TwitterCollectorWorker.TWITTER_PLACES_ANALYZER_MEDIA_TYPE
+import static com.ofg.microservice.github.GithubCollectorWorker.TWITTER_PLACES_ANALYZER_MEDIA_TYPE
 import static org.springframework.http.HttpStatus.OK
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status

@@ -1,4 +1,5 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
+
 import groovy.transform.TypeChecked
 import net.sf.ehcache.config.CacheConfiguration
 import org.springframework.beans.factory.annotation.Autowired

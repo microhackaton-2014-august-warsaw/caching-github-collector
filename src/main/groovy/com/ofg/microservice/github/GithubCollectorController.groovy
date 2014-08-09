@@ -1,4 +1,4 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
 
 import groovy.transform.TypeChecked
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,18 +10,18 @@ import static org.springframework.util.StringUtils.hasText
 
 @TypeChecked
 @RestController
-class TwitterCollectorController {
-    private TwitterCollector collectorWorker
+class GithubCollectorController {
+    private GithubCollector collectorWorker
 
     @Autowired
-    TwitterCollectorController(TwitterCollector collectorWorker) {
+    GithubCollectorController(GithubCollector collectorWorker) {
         this.collectorWorker = collectorWorker
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/tweets/{twitterLogin}/{pairId}", produces="application/json", method = RequestMethod.GET)
-    void getTweets(@PathVariable String twitterLogin, @PathVariable Long pairId) {
-        hasText(twitterLogin); notNull(pairId)
-        collectorWorker.collectAndPassToAnalyzers(twitterLogin, pairId)
+    @RequestMapping(value = "/github/{githubLogin}/{pairId}", produces="application/json", method = RequestMethod.GET)
+    void getGithubInfo(@PathVariable String githubLogin, @PathVariable Long pairId) {
+        hasText(githubLogin); notNull(pairId)
+        collectorWorker.collectAndPassToAnalyzers(githubLogin, pairId)
     }
 }

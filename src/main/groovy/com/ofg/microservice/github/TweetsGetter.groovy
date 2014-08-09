@@ -1,4 +1,4 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
 
 import groovy.transform.PackageScope
 import groovy.transform.TypeChecked

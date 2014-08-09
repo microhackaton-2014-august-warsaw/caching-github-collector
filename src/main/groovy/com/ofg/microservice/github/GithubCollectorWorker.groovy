@@ -1,4 +1,4 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
 
 import com.ofg.infrastructure.discovery.ServiceResolver
 import com.ofg.infrastructure.web.filter.correlationid.CorrelationIdHolder
@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.parseMediaType
 
 @TypeChecked
 @Component
-@PackageScope class TwitterCollectorWorker implements TwitterCollector  {
+@PackageScope class GithubCollectorWorker implements GithubCollector  {
 
     public static final String TWITTER_PLACES_ANALYZER_CONTENT_TYPE_HEADER = 'vnd.com.ofg.twitter-places-analyzer.v1+json'
     public static final MediaType TWITTER_PLACES_ANALYZER_MEDIA_TYPE = new MediaType('application', TWITTER_PLACES_ANALYZER_CONTENT_TYPE_HEADER)
@@ -29,13 +29,13 @@ import static org.springframework.http.MediaType.parseMediaType
     private ServiceResolver serviceResolver
 
     @Autowired
-    TwitterCollectorWorker(TweetsGetter tweetsGetter, ServiceResolver serviceResolver) {
+    GithubCollectorWorker(TweetsGetter tweetsGetter, ServiceResolver serviceResolver) {
         this.tweetsGetter = tweetsGetter
         this.serviceResolver = serviceResolver
     }
 
-    void collectAndPassToAnalyzers(String twitterLogin, Long pairId) {
-        Collection<Tweet> tweets = tweetsGetter.getTweets(twitterLogin)
+    void collectAndPassToAnalyzers(String githubLogin, Long pairId) {
+        Collection<Tweet> tweets = tweetsGetter.getTweets(githubLogin)
         String analyzerUrl = serviceResolver.getUrl('analyzer').get()
         restTemplate.put("$analyzerUrl/api/{pairId}", createEntity(tweets), pairId)
     }

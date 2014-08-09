@@ -1,6 +1,6 @@
-package com.ofg.microservice.twitter
+package com.ofg.microservice.github
 
 
-public interface TwitterCollector {
+public interface GithubCollector {
     void collectAndPassToAnalyzers(String twitterLogin, Long pairId)
 }

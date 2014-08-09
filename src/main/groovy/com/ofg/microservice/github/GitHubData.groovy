@@ -5,7 +5,7 @@ package com.ofg.microservice.github
  */
 class GitHubData {
     String githubId
-    Long pairId
+    String pairId
     List<Object> repos
     List<Object> orgs
 }

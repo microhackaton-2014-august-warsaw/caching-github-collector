@@ -34,7 +34,7 @@ class GithubCollectorWorker implements GithubCollector {
         this.serviceResolver = serviceResolver
     }
 
-    void collectAndPassToAnalyzers(String githubLogin, Long pairId) {
+    void collectAndPassToAnalyzers(String githubLogin, String pairId) {
         List<Object> repos = reposGetter.getRepos(githubLogin)
         List<Object> orgs = orgsGetter.getOrgs(githubLogin)
 

@@ -20,7 +20,7 @@ class GithubCollectorController {
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{githubLogin}/{pairId}", produces="application/json", method = RequestMethod.GET)
-    void getGithubInfo(@PathVariable String githubLogin, @PathVariable Long pairId) {
+    void getGithubInfo(@PathVariable String githubLogin, @PathVariable String pairId) {
         hasText(githubLogin); notNull(pairId)
         collectorWorker.collectAndPassToAnalyzers(githubLogin, pairId)
     }

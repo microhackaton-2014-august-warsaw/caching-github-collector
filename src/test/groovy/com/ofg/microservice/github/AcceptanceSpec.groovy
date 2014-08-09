@@ -35,8 +35,8 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
             sendUsernameAndPairId()
         then:
             await().atMost(5, TimeUnit.SECONDS).until({ wireMock.verifyThat(postRequestedFor(urlEqualTo("/topics-analyzer/api/analyze")).
-                        withRequestBody(containing('githubLogin')))
-//                        withHeader("Content-Type", equalTo(GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER.toString())))
+                        withRequestBody(containing('githubId')).
+                        withHeader("Content-Type", containing(GITHUB_TOPICS_ANALYZER_CONTENT_TYPE_HEADER.toString())))
             })
     }
 

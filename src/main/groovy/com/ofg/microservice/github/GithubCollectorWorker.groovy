@@ -48,12 +48,18 @@ class GithubCollectorWorker implements GithubCollector {
                  repos   : repos,
                  orgs    : orgs])
 
-        try {
-            String topicsUrl = serviceResolver.getUrl('topics-analyzer').get()
-            restTemplate.postForLocation("${topicsUrl}/api/analyze", createTopicsEntity(data))
-        } catch (Exception e) {
-            log.error(e.getMessage(), e)
-            throw e
+        com.google.common.base.Optional<String> topicsUrlOpt = serviceResolver.getUrl('topics-analyzer')
+
+        if (topicsUrlOpt.present) {
+            try {
+                String topicsUrl = topicsUrlOpt.get()
+                restTemplate.postForLocation("${topicsUrl}/api/analyze", createTopicsEntity(data))
+            } catch (Exception e) {
+                log.error(e.getMessage(), e)
+                throw e
+            }
+        } else {
+            log.warn("No analyzers found!")
         }
     }
 
